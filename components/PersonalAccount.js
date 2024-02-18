@@ -12,17 +12,17 @@ import { Dimensions } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import * as Animatable from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import autoawesome from "react-native-vector-icons/MaterialIcons";
-import appshortcut from "react-native-vector-icons/MaterialIcons";
-import shimmer from "react-native-vector-icons/MaterialCommunityIcons";
+// import autoawesome from "react-native-vector-icons/MaterialIcons";
+// import appshortcut from "react-native-vector-icons/MaterialIcons";
+// import shimmer from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Info from "react-native-vector-icons/FontAwesome5";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isSmallScreen = screenWidth < 375;
 
-const PersonalAccount = ({isEnabled}) => {
+const PersonalAccount = ({ isEnabled }) => {
   const [savedWords, setSavedWords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
@@ -90,16 +90,16 @@ const PersonalAccount = ({isEnabled}) => {
   const renderContent = () => {
     if (isLoading) {
       <View style={styles.loadingContainer}>
-      <Image
-        source={require("../assets/eclipse.gif")}
-        style={{
-          width: 100,
-          height: 200,
-          resizeMode: "contain",
-          alignItems: "center",
-        }}
-      />
-    </View>
+        <Image
+          source={require("../assets/eclipse.gif")}
+          style={{
+            width: 100,
+            height: 200,
+            resizeMode: "contain",
+            alignItems: "center",
+          }}
+        />
+      </View>;
     } else if (savedWords.length === 0) {
       return (
         <Text style={styles.wordText}>
@@ -116,7 +116,7 @@ const PersonalAccount = ({isEnabled}) => {
           <Text style={styles.wordTitle}>
             List of your predictions:
             {/* {t('list')} */}
-            </Text>
+          </Text>
           <ScrollView style={styles.wordList}>
             {savedWords.map((word, index) => (
               <Pressable
@@ -157,9 +157,8 @@ const PersonalAccount = ({isEnabled}) => {
           <View style={styles.footer}>
             {/* <Text style={styles.wordTitle}>saved predictions: {totalRecords}</Text> */}
             <Text style={styles.wordTitle}>
-              predictions that came true:{" "}
-              {/* {t("predictions")}{" "} */}
-           {wordsWithTag1}
+              predictions that came true: {/* {t("predictions")}{" "} */}
+              {wordsWithTag1}
             </Text>
           </View>
         </>

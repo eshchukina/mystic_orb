@@ -5,7 +5,7 @@ import Back from "react-native-vector-icons/AntDesign";
 import Ball from "react-native-vector-icons/MaterialCommunityIcons";
 import Heart from "react-native-vector-icons/Ionicons";
 import Hat from "react-native-vector-icons/MaterialCommunityIcons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const Info = ({ setSelectedComponent }) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -60,7 +60,7 @@ const Info = ({ setSelectedComponent }) => {
         <Text style={styles.text}>
           Don't miss the opportunity to immerse yourself in the amazing world of
           divinations with "Mystic Orb"!
-      {/* {t("info_3")} */}
+          {/* {t("info_3")} */}
         </Text>
 
         <Text style={styles.text}>

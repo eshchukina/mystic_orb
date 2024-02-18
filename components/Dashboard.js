@@ -10,12 +10,11 @@ import { Audio } from "expo-av";
 import * as Animatable from "react-native-animatable";
 import Heart from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import * as SQLite from "expo-sqlite";
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from "axios"; 
 
-const db = SQLite.openDatabase("predictions.db"); // Open or create a SQLite database
-
+const db = SQLite.openDatabase("predictions.db"); 
 
 const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -23,12 +22,12 @@ const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
   const soundObject = new Audio.Sound();
   const [buttonText, setButtonText] = useState("heart-outline");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const textRef = useRef(null); // Define textRef as a mutable reference
+  const textRef = useRef(null); 
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchWordsFromAPI(); // Fetch words from API on component mount
+    fetchWordsFromAPI(); 
   }, []);
 
   useEffect(() => {
@@ -38,56 +37,52 @@ const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
   }, []);
 
   useEffect(() => {
-    fetchWordsFromAPI(); // Fetch words from API whenever isEnabled changes
-  }, [isEnabled]); // Add isEnabled to the dependency array
-  
+    fetchWordsFromAPI(); 
+  }, [isEnabled]); 
+
   const fetchWordsFromAPI = async () => {
     try {
-      const response = await axios.get("https://eb-api.una.rest/words/predictions");
-      
-      const fetchedData = response.data.map(item => ({
+      const response = await axios.get(
+        "https://eb-api.una.rest/words/predictions"
+      );
+
+      const fetchedData = response.data.map((item) => ({
         word: item.word,
-        translation: item.translation
+        translation: item.translation,
       }));
-  
-      // Shuffle the fetched data
+
       const shuffledData = fetchedData.sort(() => Math.random() - 0.5);
-    
-      // Open a transaction to insert data into SQLite
-      db.transaction(tx => {
+
+      db.transaction((tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS Words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT, translation TEXT);'
+          "CREATE TABLE IF NOT EXISTS Words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT, translation TEXT);"
         );
-        shuffledData.forEach(item => {
+        shuffledData.forEach((item) => {
           tx.executeSql(
-            'INSERT INTO Words (word, translation) VALUES (?, ?);',
+            "INSERT INTO Words (word, translation) VALUES (?, ?);",
             [item.word, item.translation]
           );
         });
       });
-  
-      // Now, retrieve data from SQLite and shuffle it again before setting the state
-      db.transaction(tx => {
-        tx.executeSql(
-          'SELECT * FROM Words;',
-          [],
-          (_, { rows: { _array } }) => {
-            const retrievedData = isEnabled ? _array.map(item => item.word) : _array.map(item => item.translation);
-  
-            // Shuffle the retrieved data again
-            const shuffledRetrievedData = retrievedData.sort(() => Math.random() - 0.5);
-  
-            setShuffledTexts(shuffledRetrievedData);
-          }
-        );
+
+      db.transaction((tx) => {
+        tx.executeSql("SELECT * FROM Words;", [], (_, { rows: { _array } }) => {
+          const retrievedData = isEnabled
+            ? _array.map((item) => item.word)
+            : _array.map((item) => item.translation);
+
+          const shuffledRetrievedData = retrievedData.sort(
+            () => Math.random() - 0.5
+          );
+
+          setShuffledTexts(shuffledRetrievedData);
+        });
       });
     } catch (error) {
       console.error("Error fetching words from API:", error);
     }
   };
-  
-  
-  
+
   const rotationAnimation = useRef(new Animated.Value(0)).current;
 
   const startRotationAnimation = () => {
@@ -106,11 +101,11 @@ const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
     setIsButtonEnabled(true);
     try {
       await startRotationAnimation();
-      textRef.current.fadeIn(9000); // Accessing fadeIn method using current property
+      textRef.current.fadeIn(9000);
       await setCurrentTextIndex(
         (prevIndex) => (prevIndex + 1) % shuffledTexts.length
       );
-      await soundObject.loadAsync(require("./sound3.mp3"));
+      await soundObject.loadAsync(require("../assets/sound3.mp3"));
       await soundObject.playAsync();
       setIsButtonEnabled(true);
     } catch (error) {
@@ -129,7 +124,9 @@ const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
 
       try {
         const existingTranslations = await AsyncStorage.getItem("savedWords");
-        const translations = existingTranslations ? JSON.parse(existingTranslations) : [];
+        const translations = existingTranslations
+          ? JSON.parse(existingTranslations)
+          : [];
         const newWord = {
           text: displayedText,
           date: new Date().toISOString(),
@@ -174,12 +171,12 @@ const Dashboard = ({ isEnabled, setIsEnabled, setSelectedText }) => {
         Click on the screen and get a prediction
         {/* {t("dashboard")} */}
       </Text>
-      
+
       <Animatable.Text
-        ref={textRef} // Assigning textRef to the ref attribute
+        ref={textRef}
         style={[
           styles.containerText,
-          isEnabled ? styles.fontFirst : styles.fontFirstru
+          isEnabled ? styles.fontFirst : styles.fontFirstru,
         ]}
       >
         {shuffledTexts[currentTextIndex]}

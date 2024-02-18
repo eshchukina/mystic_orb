@@ -10,10 +10,9 @@ import {
 } from "react-native";
 import Close from "react-native-vector-icons/AntDesign";
 import Mail from "react-native-vector-icons/Entypo";
-import { Picker } from '@react-native-picker/picker';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { Picker } from "@react-native-picker/picker";
+import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ModalComponent = ({
   visible,
@@ -22,18 +21,16 @@ const ModalComponent = ({
   selectedLanguage,
   setSelectedLanguage,
 }) => {
-
   const { t, i18n } = useTranslation();
 
   const changeLanguage = async (lng) => {
     try {
-      await AsyncStorage.setItem('selectedLanguage', lng);
+      await AsyncStorage.setItem("selectedLanguage", lng);
       i18n.changeLanguage(lng);
     } catch (error) {
-      console.error('Error saving language to AsyncStorage:', error);
+      console.error("Error saving language to AsyncStorage:", error);
     }
   };
-  
 
   const sendEmail = () => {
     const email = "frankkat377@gmail.com";
@@ -49,9 +46,6 @@ const ModalComponent = ({
     setSelectedComponent("info");
   };
 
-
- 
-
   return (
     <Modal
       visible={visible}
@@ -62,8 +56,8 @@ const ModalComponent = ({
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalText}>
-            {/* Write to us or open the app description */}
-            {t("modalText")}
+            Write to us or open the app description
+            {/* {t("modalText")} */}
           </Text>
           <View style={styles.iconContainer}>
             <TouchableHighlight
@@ -160,8 +154,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   languagePicker: {
-    fontFamily:"second",
-     color:"red",
+    fontFamily: "second",
+    color: "red",
   },
 });
 

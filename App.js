@@ -10,7 +10,7 @@ import Header from "./components/Header";
 import Info from "./components/Info";
 
 import i18n from "./components/i18n";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -22,17 +22,17 @@ export default function App() {
   useEffect(() => {
     async function loadLanguage() {
       try {
-        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        const savedLanguage = await AsyncStorage.getItem("selectedLanguage");
         if (savedLanguage) {
           setSelectedLanguage(savedLanguage);
           changeLanguage(savedLanguage);
         } else {
-          setSelectedLanguage('english');
-          changeLanguage('en');
-          await AsyncStorage.setItem('selectedLanguage', 'english');
+          setSelectedLanguage("english");
+          changeLanguage("en");
+          await AsyncStorage.setItem("selectedLanguage", "english");
         }
       } catch (error) {
-        console.error('Error loading language from AsyncStorage:', error);
+        console.error("Error loading language from AsyncStorage:", error);
       }
     }
 
@@ -58,10 +58,10 @@ export default function App() {
 
   const changeLanguage = async (lng) => {
     try {
-      await AsyncStorage.setItem('selectedLanguage', lng);
+      await AsyncStorage.setItem("selectedLanguage", lng);
       i18n.changeLanguage(lng);
     } catch (error) {
-      console.error('Error saving language to AsyncStorage:', error);
+      console.error("Error saving language to AsyncStorage:", error);
     }
   };
 
@@ -86,16 +86,17 @@ export default function App() {
       {selectedComponent === "mainmenu" && (
         <>
           <Header
-          setSelectedLanguage={setSelectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
             setSelectedComponent={setSelectedComponent}
             setSelectedText={setSelectedText}
             selectedLanguage={selectedLanguage}
           />
-          <MainMenu setSelectedComponent={setSelectedComponent}
-                      selectedLanguage={selectedLanguage}
-                      setIsEnabled={setIsEnabled}
-                      isEnabled={isEnabled}
-                      />
+          <MainMenu
+            setSelectedComponent={setSelectedComponent}
+            selectedLanguage={selectedLanguage}
+            setIsEnabled={setIsEnabled}
+            isEnabled={isEnabled}
+          />
         </>
       )}
       {selectedComponent === "dashboard" && (
